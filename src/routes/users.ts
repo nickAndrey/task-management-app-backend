@@ -1,20 +1,17 @@
 import { Router } from 'express';
 import createUser from '../controllers/users/createUser';
-import userReqValidator from '../validators/userReqValidator';
+import validateUserCreateDto from '../validators/validateUserCreateDto';
 
 const router = Router();
 
-router.use((req, res, next) => {
-  const body: unknown = req.body;
-  const error = userReqValidator(body as Record<string, unknown>);
+router.post('/create', (req, res) => {
+  const error = validateUserCreateDto(req.body);
 
   if (error) {
-    res.status(400).send({ data: [], success: false, msg: error });
-    return;
+    return res.status(400).send({ data: [], success: false, msg: error });
   }
-  next();
-});
 
-router.post('/create', createUser);
+  createUser(req, res);
+});
 
 export default router;

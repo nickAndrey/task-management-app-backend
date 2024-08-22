@@ -1,4 +1,4 @@
-const userReqValidator = (user: Record<string, unknown>): string | null => {
+const validateUserCreateDto = (user: Record<string, unknown>): string | null => {
   // Validate first name
   if (typeof user.first_name !== 'string') {
     return 'Invalid first_name';
@@ -28,4 +28,4 @@ const userReqValidator = (user: Record<string, unknown>): string | null => {
   return null;
 };
 
-export default userReqValidator;
+export default validateUserCreateDto;
