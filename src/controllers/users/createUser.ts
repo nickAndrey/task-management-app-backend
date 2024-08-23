@@ -5,7 +5,7 @@ import db from '../../configs/db.config';
 import User from '../../models/User';
 
 const createUser = (req: Request, res: Response) => {
-  const { first_name, last_name, email_address, password, phone_number } = req.body;
+  const { first_name, last_name, email_address, password, phone_number } = req.body as User;
 
   const newUser: User = {
     id: uuidv4(),
