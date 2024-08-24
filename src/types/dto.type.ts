@@ -2,7 +2,7 @@ type DTO = Record<
   string,
   {
     required: boolean;
-    validate?: (value: string) => {
+    validate?: (value: unknown) => {
       valid: boolean;
       msg?: string;
     };

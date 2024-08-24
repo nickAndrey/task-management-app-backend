@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 import db from '../../configs/db.config';
 
 const login = async (req: Request, res: Response) => {
-  const { username, password } = req.body;
+  const { username, password, tokenNoExpired } = req.body;
 
   const query = 'SELECT * FROM users WHERE email_address = $1';
 
@@ -23,9 +23,15 @@ const login = async (req: Request, res: Response) => {
     }
 
     const secret = process.env.JWT_SECRET || '';
-    const token = jwt.sign({ id: user.id, username: user.email_address }, secret, {
-      expiresIn: '4h',
-    });
+    const token = jwt.sign(
+      { id: user.id, username: user.email_address },
+      secret,
+      tokenNoExpired
+        ? undefined
+        : {
+            expiresIn: '4h',
+          }
+    );
 
     return res.status(200).send({ data: [{ token }], success: true, msg: 'Login successful' });
   } catch (err) {

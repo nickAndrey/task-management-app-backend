@@ -15,7 +15,14 @@ const updateUserDto: DTO = {
 
   phone_number: {
     required: false,
-    validate: (value: string) => {
+    validate: (value) => {
+      if (typeof value !== 'string') {
+        return {
+          valid: false,
+          msg: 'Value must be a string.',
+        };
+      }
+
       const isValid = /^[0-9]{10,15}$/.test(value);
 
       return {
@@ -27,7 +34,14 @@ const updateUserDto: DTO = {
 
   email_address: {
     required: false,
-    validate: (value: string) => {
+    validate: (value) => {
+      if (typeof value !== 'string') {
+        return {
+          valid: false,
+          msg: 'Value must be a string.',
+        };
+      }
+
       const isValid = /^\S+@\S+\.\S+$/.test(value);
 
       return {

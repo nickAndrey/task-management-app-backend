@@ -8,22 +8,23 @@ type Args = {
 const checkDtoMiddleware = ({ dto }: Args) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     const validationErrors: { field: string; valid: boolean; msg?: string }[] = [];
-    const requiredFields = Object.keys(dto).filter((field) => dto[field].required);
     const fieldsFromRequest = new Set(Object.keys(req.body));
     const missedFields: string[] = [];
 
-    for (const field of requiredFields) {
-      if (!fieldsFromRequest.has(field)) {
+    for (const field of Object.keys(dto)) {
+      if (dto[field].required && !fieldsFromRequest.has(field)) {
         missedFields.push(field);
       }
 
-      const validateFn = dto?.[field]?.validate;
+      if (fieldsFromRequest.has(field)) {
+        const validateFn = dto?.[field]?.validate;
 
-      if (typeof validateFn === 'function') {
-        const validateRes = validateFn(req.body[field]);
+        if (typeof validateFn === 'function') {
+          const validateRes = validateFn(req.body[field]);
 
-        if (!validateRes.valid) {
-          validationErrors.push({ field, ...validateRes });
+          if (!validateRes.valid) {
+            validationErrors.push({ field, ...validateRes });
+          }
         }
       }
     }

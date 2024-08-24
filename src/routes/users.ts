@@ -6,18 +6,15 @@ import getUsers from '../controllers/users/getUsers';
 import updateUser from '../controllers/users/updateUser';
 import createUserDto from '../dto/createUserDto';
 import updateUserDto from '../dto/updateUserDto';
+import authMiddleware from '../middlewares/authMiddleware';
 import checkDtoMiddleware from '../middlewares/checkDtoMiddleware';
 
 const router = Router();
 
-router.get('/', getUsers);
-
-router.get('/:id', getUser);
-
 router.post('/create', checkDtoMiddleware({ dto: createUserDto }), createUser);
-
-router.put('/update', checkDtoMiddleware({ dto: updateUserDto }), updateUser);
-
-router.delete('/:id', deleteUser);
+router.get('/:id', authMiddleware, getUser);
+router.get('/', authMiddleware, getUsers);
+router.put('/update', authMiddleware, checkDtoMiddleware({ dto: updateUserDto }), updateUser);
+router.delete('/:id', authMiddleware, deleteUser);
 
 export default router;
