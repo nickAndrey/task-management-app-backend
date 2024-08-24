@@ -4,15 +4,17 @@ import { v4 as uuidv4 } from 'uuid';
 import db from '../../configs/db.config';
 import User from '../../models/User';
 
-const createUser = (req: Request, res: Response) => {
+const createUser = async (req: Request, res: Response) => {
   const { first_name, last_name, email_address, password, phone_number } = req.body as User;
+
+  const hashedPassword = await bcrypt.hash(password, 10);
 
   const newUser: User = {
     id: uuidv4(),
     first_name,
     last_name,
     email_address,
-    password: bcrypt.hashSync(password, 10),
+    password: hashedPassword,
     phone_number,
     created_at: new Date().toISOString(),
     updated_at: null,

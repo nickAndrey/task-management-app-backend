@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import db from '../../configs/db.config';
 
-const deleteUser = (req: Request, res: Response) => {
+const deleteUser = async (req: Request, res: Response) => {
   const { id } = req.params;
 
   const query = 'DELETE FROM users WHERE id = $1';
