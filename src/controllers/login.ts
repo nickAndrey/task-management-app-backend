@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt'; // Assuming bcrypt is used for password hashing
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
-import db from '../../configs/db.config';
+import db from '../configs/db.config';
 
 const login = async (req: Request, res: Response) => {
   const { username, password, tokenNoExpired } = req.body;
