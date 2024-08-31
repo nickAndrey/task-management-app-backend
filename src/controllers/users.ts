@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
-import CustomError from '../configs/custom-error';
 import { UserModel } from '../models/User';
+import CustomError from '../utils/custom-error';
 
 export const createUser = async (req: Request, res: Response, next: NextFunction) => {
   try {

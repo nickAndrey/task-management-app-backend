@@ -1,8 +1,8 @@
 import bcrypt from 'bcrypt';
 import { DatabaseError } from 'pg';
 import { v4 as uuidv4 } from 'uuid';
-import CustomError from '../configs/custom-error';
 import db from '../configs/db.config';
+import CustomError from '../utils/custom-error';
 
 export interface IUser {
   id?: string;
