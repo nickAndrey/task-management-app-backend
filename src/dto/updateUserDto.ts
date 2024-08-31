@@ -1,10 +1,6 @@
 import DTO from '../types/dto.type';
 
 const updateUserDto: DTO = {
-  id: {
-    required: true,
-  },
-
   first_name: {
     required: false,
   },
