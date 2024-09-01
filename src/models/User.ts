@@ -1,5 +1,4 @@
 import bcrypt from 'bcrypt';
-import { DatabaseError } from 'pg';
 import { v4 as uuidv4 } from 'uuid';
 import db from '../configs/db.config';
 import CustomError from '../utils/custom-error';
@@ -21,19 +20,22 @@ export class UserModel {
       const response = await db.query('SELECT * FROM users');
       return response.rows;
     } catch (error) {
-      console.error('Error fetching users:', error);
-      throw new CustomError({ message: 'Error occurred attempting to fetch users' });
+      throw new CustomError({
+        error,
+        message: 'Error occurred attempting to fetch users',
+      });
     }
   }
 
   static async getById(id: string): Promise<IUser | null> {
     try {
       const response = await db.query('SELECT * FROM users WHERE id = $1', [id]);
-
       return response.rows[0];
     } catch (error) {
-      console.error('Error fetching user:', error);
-      throw new CustomError({ message: 'Error occurred attempting to fetch user' });
+      throw new CustomError({
+        error,
+        message: 'Error occurred attempting to fetch user',
+      });
     }
   }
 
@@ -72,18 +74,10 @@ export class UserModel {
       const response = await db.query(query, values);
       return response.rows[0];
     } catch (error) {
-      console.log('Error creating user', error);
-
-      if (error instanceof DatabaseError) {
-        if (error.code === '23505') {
-          throw new CustomError({
-            code: '23505',
-            message: `User with an email ${user.email_address} already exists`,
-          });
-        }
-      }
-
-      throw new CustomError({ message: 'Error creating user' });
+      throw new CustomError({
+        error,
+        message: 'Error occurred attempting to create a user.',
+      });
     }
   }
 
@@ -126,8 +120,10 @@ export class UserModel {
       const response = await db.query(query, values);
       return response.rows[0];
     } catch (error) {
-      console.error('Error attempting to update user:', error);
-      throw new CustomError({ message: 'Error attempting to update user' });
+      throw new CustomError({
+        error,
+        message: 'Error attempting to update user.',
+      });
     }
   }
 
@@ -135,8 +131,10 @@ export class UserModel {
     try {
       await db.query('DELETE FROM users WHERE id = $1', [id]);
     } catch (error) {
-      console.error('Error occurred attempting to delete user:', error);
-      throw new CustomError({ message: 'Error occurred attempting to delete user' });
+      throw new CustomError({
+        error,
+        message: 'Error occurred attempting to delete user.',
+      });
     }
   }
 }
