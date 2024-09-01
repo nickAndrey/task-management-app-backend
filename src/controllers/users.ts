@@ -56,7 +56,6 @@ export const deleteUser = async (req: Request, res: Response, next: NextFunction
   try {
     const userId = req.params.id;
     await UserModel.delete(userId);
-
     return res.status(204).json({ data: [], success: true, msg: '' });
   } catch (error) {
     next(error);
